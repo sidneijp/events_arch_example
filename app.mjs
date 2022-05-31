@@ -1,6 +1,6 @@
 import express from "express"
 import morgan from 'morgan'
-//import db from "./db.js";
+import db from "./db.js";
 import routes from "./routes.js";
 import __dirname from "./get_path.js"
 
@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.use(routes);
 
-// db.sync(() => console.log(`Banco de dados conectado`));
+db.sync(() => console.log(`Banco de dados conectado`));
 
 app.listen(port, () => {
   console.log(`JSON example app listening at http://localhost:${port}`)

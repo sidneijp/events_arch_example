@@ -1,5 +1,8 @@
-//const redis = require("redis")
 import redis from "redis"
+import db from "./db.js"
+import {Message} from "./models.js"
+
+db.sync(() => console.log(`Banco de dados conectado`));
 
 (async function() {
   const client = redis.createClient({
@@ -7,8 +10,9 @@ import redis from "redis"
   });
   const subscriber = client.duplicate();
   await subscriber.connect();
-  await subscriber.subscribe('event_topic', (message) => {
-    console.log(message);
+  await subscriber.subscribe('event_topic', async function(message) {
+    const parsedMessage = JSON.parse(message)
+    await Message.create(parsedMessage)
   });
 
 })();
